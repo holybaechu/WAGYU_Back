@@ -14,7 +14,8 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),
     PET_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 반려동물 정보를 찾을 수 없습니다."),
     FORBIDDEN_PET_UPDATE(HttpStatus.FORBIDDEN, "해당 반려동물 정보를 수정할 권한이 없습니다."),
-    FORBIDDEN_PET_DELETE(HttpStatus.FORBIDDEN, "해당 반려동물 정보를 삭제할 권한이 없습니다.");
+    FORBIDDEN_PET_DELETE(HttpStatus.FORBIDDEN, "해당 반려동물 정보를 삭제할 권한이 없습니다."),
+    MAXIMUM_PET_COUNT(HttpStatus.FORBIDDEN, "더 이상 반려동물을 추가할 수 없습니다.");
 
     private final HttpStatus status;
     private final String defaultMessage;

@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +43,9 @@ public class PetService {
     @Transactional
     public void createPet(String username, PetCreateRequestDTO dto) {
         User owner = userService.findByUsername(username);
+        if (petRepository.countAllByOwnerAndIsDeletedFalse(owner).orElse(0) >= 2) {
+            throw new CustomException(ErrorCode.MAXIMUM_PET_COUNT);
+        }
 
         Pet pet = Pet.builder()
                 .name(dto.getName())
@@ -51,6 +53,7 @@ public class PetService {
                 .breed(dto.getBreed())
                 .gender(dto.getGender())
                 .owner(owner)
+                .isDeleted(false)
                 .build();
         petRepository.save(pet);
     }
