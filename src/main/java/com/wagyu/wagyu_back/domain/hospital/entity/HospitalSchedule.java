@@ -23,8 +23,8 @@ public class HospitalSchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     private Hospital hospital;
 
-    @Column(nullable = false, name = "day_off_week")
-    private Short dayOffWeek;
+    @Column(nullable = false, name = "day_of_week")
+    private Short dayOfWeek;
 
     @Column(name = "open_time")
     private LocalTime openTime;

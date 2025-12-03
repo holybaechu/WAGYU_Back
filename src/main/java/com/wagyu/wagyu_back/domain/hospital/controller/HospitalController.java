@@ -1,6 +1,6 @@
 package com.wagyu.wagyu_back.domain.hospital.controller;
 
-import com.wagyu.wagyu_back.domain.hospital.dto.HospitalSummaryResponse;
+import com.wagyu.wagyu_back.domain.hospital.dto.HospitalSummaryResponseDTO;
 import com.wagyu.wagyu_back.domain.hospital.service.HospitalService;
 import com.wagyu.wagyu_back.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class HospitalController {
     private final HospitalService hospitalService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<HospitalSummaryResponse>>> getAllHospitals(Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<HospitalSummaryResponseDTO>>> getAllHospitals(Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(hospitalService.getAllHospitals(pageable)));
     }
 }

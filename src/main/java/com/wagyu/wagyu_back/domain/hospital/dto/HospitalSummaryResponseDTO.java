@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 @Getter
 @Builder
-public class HospitalSummaryResponse {
+public class HospitalSummaryResponseDTO {
     private Long id;
     private String name;
     private String address;

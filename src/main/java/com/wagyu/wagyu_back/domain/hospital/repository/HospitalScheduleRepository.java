@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface HospitalScheduleRepository extends JpaRepository<HospitalSchedule, Long> {
-    Optional<HospitalSchedule> findByHospitalIdAndDayOffWeek(Long hospitalId, Short dayOffWeek);
+    Optional<HospitalSchedule> findByHospitalIdAndDayOfWeek(Long hospitalId, Short dayOffWeek);
 }
