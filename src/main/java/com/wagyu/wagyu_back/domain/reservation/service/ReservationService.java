@@ -3,8 +3,10 @@ package com.wagyu.wagyu_back.domain.reservation.service;
 import com.wagyu.wagyu_back.domain.auth.enums.AuthLevel;
 import com.wagyu.wagyu_back.domain.hospital.entity.Hospital;
 import com.wagyu.wagyu_back.domain.hospital.repository.HospitalRepository;
+import com.wagyu.wagyu_back.domain.reservation.dto.request.ReservationUpdateStatusRequestDTO;
 import com.wagyu.wagyu_back.domain.reservation.dto.response.*;
 import com.wagyu.wagyu_back.domain.reservation.entity.Reservation;
+import com.wagyu.wagyu_back.domain.reservation.enums.ReservationStatus;
 import com.wagyu.wagyu_back.domain.reservation.repository.ReservationRepository;
 import com.wagyu.wagyu_back.domain.user.entity.User;
 import com.wagyu.wagyu_back.domain.user.repository.UserRepository;
@@ -79,5 +81,25 @@ public class ReservationService {
                 .createdAt(reservation.getCreatedAt())
                 .updatedAt(reservation.getUpdatedAt())
                 .build();
+    }
+
+    @Transactional
+    public void updateReservationStatus(String username, Long id, ReservationUpdateStatusRequestDTO dto) {
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        User owner = reservation.getHospital().getOwner();
+        if (owner == null || !user.getId().equals(owner.getId())) {
+            throw new CustomException(ErrorCode.FORBIDDEN_UPDATE_RESERVATION);
+        }
+
+        if (dto.getStatus().equals(ReservationStatus.REJECTED)) {
+            reservation.reject(dto.getStatus(), dto.getHospitalComment());
+        } else {
+            reservation.updateStatus(dto.getStatus());
+        }
     }
 }

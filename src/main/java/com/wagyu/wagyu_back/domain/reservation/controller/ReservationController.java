@@ -1,12 +1,14 @@
 package com.wagyu.wagyu_back.domain.reservation.controller;
 
 import com.wagyu.wagyu_back.domain.auth.enums.AuthLevel;
+import com.wagyu.wagyu_back.domain.reservation.dto.request.ReservationUpdateStatusRequestDTO;
 import com.wagyu.wagyu_back.domain.reservation.dto.response.ReservationDetailResponseDTO;
 import com.wagyu.wagyu_back.domain.reservation.dto.response.ReservationSummaryListResponseDTO;
 import com.wagyu.wagyu_back.domain.reservation.service.ReservationService;
 import com.wagyu.wagyu_back.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +38,16 @@ public class ReservationController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(ApiResponse.success(reservationService.getReservationDetail(id)));
+    }
+
+    @PatchMapping("{id}")
+    @PreAuthorize("hasAuthority('HOSPITAL')")
+    public ResponseEntity<ApiResponse<Void>> updateReservationStatus(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody ReservationUpdateStatusRequestDTO dto
+    ) {
+        reservationService.updateReservationStatus(authentication.getName(), id, dto);
+        return ResponseEntity.ok(ApiResponse.success("수정이 완료되었습니다."));
     }
 }

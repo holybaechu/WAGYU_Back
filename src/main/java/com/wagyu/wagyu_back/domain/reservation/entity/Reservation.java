@@ -67,4 +67,13 @@ public class Reservation {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void updateStatus(ReservationStatus status) {
+        this.status = status;
+    }
+
+    public void reject(ReservationStatus status, String hospitalComment) {
+        this.status = status;
+        this.hospitalComment = hospitalComment;
+    }
 }
